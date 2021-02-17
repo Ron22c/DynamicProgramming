@@ -64,8 +64,20 @@ class BST {
         }
     }
 
-    public Node find(int value) {
-      return this.root;
+    public int find(int value) {
+        if(this.root == null) return Integer.MAX_VALUE;
+        if(this.root.value == value) return root.value;
+        Node current = this.root;
+
+        while(current != null) {
+            if(current.value == value) return current.value;
+            if(current.value < value) {
+                current = current.right;
+            } else {
+                current = current.left;
+            }
+        }
+        return Integer.MAX_VALUE;
     }
 }
 
@@ -81,6 +93,8 @@ public class DiameterOfABinaryTree {
                 tree.insert(i);
             }
         }
+
+        System.out.println(tree.find(2));
 
         diameterOfaBinaryTree(tree.root);
         System.out.println(res);
