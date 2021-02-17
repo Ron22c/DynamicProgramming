@@ -1,5 +1,10 @@
 package com.cranajit.algorithms.dpontrees;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 class Node {
     public Node left;
     public Node right;
@@ -79,6 +84,64 @@ class BST {
         }
         return Integer.MAX_VALUE;
     }
+
+    public List<Integer> bfs() {
+        List<Integer> data = new ArrayList<>();
+        Queue<Node> queue = new ConcurrentLinkedQueue<>();
+
+        if(this.root == null) return data;
+        Node current = this.root;
+        queue.add(current);
+        while(!queue.isEmpty()) {
+            Node temp = queue.poll();
+            data.add(temp.value);
+            if(temp.left != null) queue.add(temp.left);
+            if(temp.right != null) queue.add(temp.right);
+        }
+        return data;
+    }
+
+    public List<Integer> dfsPostOrder() {
+        List<Integer> data = new ArrayList<>();
+        if(this.root == null) return data;
+        data = transversepost(this.root, data);
+        return data;
+    }
+
+    public List<Integer> transversepost(Node node, List<Integer> data) {
+        if(node.left != null) data =  transversepost(node.left, data);
+        if(node.right != null) data =  transversepost(node.right, data);
+        data.add(node.value);
+        return data;
+    }
+
+    public List<Integer> dfsPreOrder() {
+        List<Integer> data = new ArrayList<>();
+        if(this.root == null) return data;
+        data = transversepre(this.root, data);
+        return data;
+    }
+
+    public List<Integer> transversepre(Node node, List<Integer> data) {
+        data.add(node.value);
+        if(node.left != null) data =  transversepre(node.left, data);
+        if(node.right != null) data =  transversepre(node.right, data);
+        return data;
+    }
+
+    public List<Integer> dfsinOrder() {
+        List<Integer> data = new ArrayList<>();
+        if(this.root == null) return data;
+        data = transverseIn(this.root, data);
+        return data;
+    }
+
+    public List<Integer> transverseIn(Node node, List<Integer> data) {
+        if(node.left != null) data =  transverseIn(node.left, data);
+        data.add(node.value);
+        if(node.right != null) data =  transverseIn(node.right, data);
+        return data;
+    }
 }
 
 public class DiameterOfABinaryTree {
@@ -94,7 +157,15 @@ public class DiameterOfABinaryTree {
             }
         }
 
-        System.out.println(tree.find(2));
+        List<Integer> datadfsp = tree.dfsPreOrder();
+        List<Integer> databfs = tree.bfs();
+        List<Integer> datadfsPO = tree.dfsPostOrder();
+        List<Integer> datadfsIn = tree.dfsinOrder();
+
+        System.out.println(databfs);
+        System.out.println(datadfsp);
+        System.out.println(datadfsPO);
+        System.out.println(datadfsIn);
 
         diameterOfaBinaryTree(tree.root);
         System.out.println(res);
