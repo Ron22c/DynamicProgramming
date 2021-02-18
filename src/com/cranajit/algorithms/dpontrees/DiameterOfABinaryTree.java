@@ -5,6 +5,50 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+public class DiameterOfABinaryTree {
+    static int res = Integer.MIN_VALUE;
+
+    public static void main(String[] args) {
+        BST tree = new BST();
+        for(int i = 0; i < 15; i ++) {
+            if(i % 2 == 0) {
+                tree.insert(-i);
+            } else {
+                tree.insert(i);
+            }
+        }
+
+        List<Integer> datadfsp = tree.dfsPreOrder();
+        List<Integer> databfs = tree.bfs();
+        List<Integer> datadfsPO = tree.dfsPostOrder();
+        List<Integer> datadfsIn = tree.dfsinOrder();
+
+        System.out.println(databfs);
+        System.out.println(datadfsp);
+        System.out.println(datadfsPO);
+        System.out.println(datadfsIn);
+
+        diameterOfaBinaryTree(tree.root);
+        System.out.println(res);
+    }
+
+    public static int diameterOfaBinaryTree(Node root) {
+        if(root == null) {
+            return 0;
+        }
+
+        int left = diameterOfaBinaryTree(root.left);
+        int right = diameterOfaBinaryTree(root.right);
+
+        System.out.println(left + " LEFT " + right + " right ");
+
+        int temp = Math.max(left, right) + 1;
+        int ans = Math.max(temp, (right+left+1));
+        res = Math.max(ans, res);
+        return temp;
+    }
+}
+
 class Node {
     public Node left;
     public Node right;
@@ -141,49 +185,5 @@ class BST {
         data.add(node.value);
         if(node.right != null) data =  transverseIn(node.right, data);
         return data;
-    }
-}
-
-public class DiameterOfABinaryTree {
-    static int res = Integer.MIN_VALUE;
-
-    public static void main(String[] args) {
-        BST tree = new BST();
-        for(int i = 0; i < 15; i ++) {
-            if(i % 2 == 0) {
-                tree.insert(-i);
-            } else {
-                tree.insert(i);
-            }
-        }
-
-        List<Integer> datadfsp = tree.dfsPreOrder();
-        List<Integer> databfs = tree.bfs();
-        List<Integer> datadfsPO = tree.dfsPostOrder();
-        List<Integer> datadfsIn = tree.dfsinOrder();
-
-        System.out.println(databfs);
-        System.out.println(datadfsp);
-        System.out.println(datadfsPO);
-        System.out.println(datadfsIn);
-
-        diameterOfaBinaryTree(tree.root);
-        System.out.println(res);
-    }
-
-    public static int diameterOfaBinaryTree(Node root) {
-        if(root == null) {
-            return 0;
-        }
-
-        int left = diameterOfaBinaryTree(root.left);
-        int right = diameterOfaBinaryTree(root.right);
-
-        System.out.println(left + " LEFT " + right + " right ");
-
-        int temp = Math.max(left, right) + 1;
-        int ans = Math.max(temp, (right+left+1));
-        res = Math.max(ans, res);
-        return temp;
     }
 }
